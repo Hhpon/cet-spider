@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>准考证号查询</title>
+</head>
+
+<body>
+    <div id="app">
+        <input type="text" placeholder="身份证号" v-model='idCard' />
+        <input type="text" placeholder="姓名" v-model='userName' />
+        <input type="text" placeholder="验证码" v-model='charCode' />
+        <img :src="charCodeUrl" alt="这里是验证码">
+        <button @click='submit'>提交</button>
+    </div>
+    <script src="./axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data: {
+                cookie: '',
+                charCodeUrl: '',
+                charCode: '',
+                userName: '杜欣铭',
+                idCard: '232303199909286815'
+            },
+            mounted() {
+                this.getLoginOption()
+            },
+            methods: {
+                getLoginOption() {
+                    axios.get('/getLoginOption').then((result) => {
+                        console.log(result);
+                        this.cookie = result.data.cookie
+                        this.charCodeUrl = "data:image/jpeg;base64," + result.data.charCode
+                    }).catch((err) => {
+
+                    });
+                },
+                submit() {
+                    axios.post('/login', { charCode: this.charCode, idCard: this.idCard, userName: this.userName, cookie: this.cookie }).then(res => {
+                        console.log(res);
+                    })
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
