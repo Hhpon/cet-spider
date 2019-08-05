@@ -6,7 +6,7 @@ async function getLoginOption() {
     const getCookieOptions = {
         url: `${_URL_}/Home/QuickPrintTestTicket`,
         headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.18362'
         }
     }
 
@@ -16,6 +16,7 @@ async function getLoginOption() {
     }
 
     let cookie = await getCookie()
+    console.log(cookie);
 
     const getCharCodeOptions = {
         url: `${_URL_}/Home/VerifyCodeImg`,
@@ -27,9 +28,10 @@ async function getLoginOption() {
             return data.toString('base64');
         },
         headers: {
+            Accept: 'image/png, image/svg+xml, image/*; q=0.8, */*; q=0.5',
             Cookie: cookie,
-            'Content-Type': 'image/jpeg',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'
+            Referer: 'http://cet-bm.neea.edu.cn/Home/QuickPrintTestTicket',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.18362'
         },
     }
 

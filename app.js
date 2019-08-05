@@ -9,15 +9,13 @@ app.use(express.static('public'))
 app.use(bodyParser.json())
 
 app.get('/getLoginOption', async (req, res) => {
-    console.log('object');
     let loginOptionRet = await getLoginOption()
-    console.log(loginOptionRet);
     res.send(loginOptionRet)
 })
 
 app.post("/login", async (req, res) => {
-    console.log(req.body);
     let userInfo = req.body
+    console.log(userInfo);
     await login(userInfo.userName, userInfo.idCard, userInfo.charCode, userInfo.cookie)
     res.send('收到')
 })

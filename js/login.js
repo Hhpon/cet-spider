@@ -14,14 +14,17 @@ async function login(userName, idCard, charCode, cookie) {
             'verificationCode': charCode,
         },
         headers: {
+            Accept: '*/*',
+            'Cache-Control': 'max-age=0',
             Cookie: cookie,
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.18362'
         },
     }
 
     let loginRet = await axios(loginOption)
 
-    console.log(loginRet);
+    console.log(loginRet.data);
 
 }
 
