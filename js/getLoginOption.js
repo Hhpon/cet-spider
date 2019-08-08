@@ -16,7 +16,6 @@ async function getLoginOption() {
     }
 
     let cookie = await getCookie()
-    console.log(cookie);
 
     const getCharCodeOptions = {
         url: `${_URL_}/Home/VerifyCodeImg`,

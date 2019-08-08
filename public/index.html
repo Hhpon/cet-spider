@@ -12,12 +12,13 @@
     <div id="app">
         <input type="text" placeholder="身份证号" v-model='idCard' />
         <input type="text" placeholder="姓名" v-model='userName' />
-        <input type="text" placeholder="验证码" v-model='charCode' />
+        <input type="text" placeholder="验证码" v-model='charCode' v-on:keyup.enter="submit" />
         <img :src="charCodeUrl" alt="这里是验证码">
         <button @click='submit'>提交</button>
     </div>
     <script src="./axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.2/vue.min.js"></script>
     <script>
         const app = new Vue({
             el: '#app',
@@ -25,7 +26,7 @@
                 cookie: '',
                 charCodeUrl: '',
                 charCode: '',
-                userName: '%E6%9D%9C%E6%AC%A3%E9%93%AD',
+                userName: '杜欣铭',
                 idCard: '232303199909286815'
             },
             mounted() {
@@ -43,7 +44,7 @@
                 },
                 submit() {
                     axios.post('/login', { charCode: this.charCode, idCard: this.idCard, userName: this.userName, cookie: this.cookie }).then(res => {
-                        console.log(res);
+                        console.log(res.data);
                     })
                 }
             }

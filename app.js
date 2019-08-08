@@ -15,9 +15,8 @@ app.get('/getLoginOption', async (req, res) => {
 
 app.post("/login", async (req, res) => {
     let userInfo = req.body
-    console.log(userInfo);
-    await login(userInfo.userName, userInfo.idCard, userInfo.charCode, userInfo.cookie)
-    res.send('收到')
+    let loginRetData = await login(userInfo.userName, userInfo.idCard, userInfo.charCode, userInfo.cookie)
+    res.send(loginRetData)
 })
 
 app.listen(3000, () => {
