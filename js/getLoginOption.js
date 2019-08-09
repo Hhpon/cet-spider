@@ -36,10 +36,13 @@ async function getLoginOption() {
 
     async function getCharCode() {
         let charCodeRet = await axios(getCharCodeOptions)
-        return charCodeRet.data
+        return charCodeRet
     }
 
-    let charCode = await getCharCode()
+    let charCodeRet = await getCharCode()
+
+    let charCode = charCodeRet.data
+    cookie = cookie + ';' + charCodeRet.headers['set-cookie'][0].split(';')[0]
 
     return {
         cookie, charCode
