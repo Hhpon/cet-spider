@@ -2,54 +2,112 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>准考证号查询</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>准考证号查询</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #caf5fe;
+    }
+
+    .banner {
+      width: 100%;
+
+    }
+
+    .input-box {
+      display: flex;
+      flex-direction: column;
+      margin: 30px 20px; 
+    }
+
+    input {
+      height: 6vh;
+      margin: 10px;
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      padding-left: 10px;
+    }
+
+    .code-box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .code {
+      height: 4vh;
+      margin: 10px;
+    }
+
+    button {
+      height: 6vh;
+      margin: 30px 10px;
+      border: none;
+      outline: none;
+      border-radius: 10px;
+      font-size: 18px;
+      background-color: #f16d7a;
+      color: #ffffff;
+      font-weight: 900;
+    }
+  </style>
 </head>
 
 <body>
-    <div id="app">
-        <input type="text" placeholder="身份证号" v-model='idCard' />
-        <input type="text" placeholder="姓名" v-model='userName' />
-        <input type="text" placeholder="验证码" v-model='charCode' v-on:keyup.enter="submit" />
-        <img :src="charCodeUrl" alt="这里是验证码">
-        <button @click='submit'>提交</button>
+  <div id="app">
+    <img class="banner" src="./banner.png" alt="">
+    <div class="input-box">
+      <input type="text" placeholder="请输入身份证号" v-model='idCard' />
+      <input type="text" placeholder="请输入姓名" v-model='userName' />
+      <div class="code-box">
+        <input type="text" placeholder="请输入验证码" v-model='charCode' v-on:keyup.enter="submit" />
+        <img class="code" :src="charCodeUrl" alt="这里是验证码">
+      </div>
+      <button @click='submit'>登录</button>
     </div>
-    <script src="./axios.min.js"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.2/vue.min.js"></script>
-    <script>
-        const app = new Vue({
-            el: '#app',
-            data: {
-                cookie: '',
-                charCodeUrl: '',
-                charCode: '',
-                userName: '杜欣铭',
-                idCard: '232303199909286815'
-            },
-            mounted() {
-                this.getLoginOption()
-            },
-            methods: {
-                getLoginOption() {
-                    axios.get('/getLoginOption').then((result) => {
-                        console.log(result);
-                        this.cookie = result.data.cookie
-                        this.charCodeUrl = "data:image/jpeg;base64," + result.data.charCode
-                    }).catch((err) => {
+  </div>
+  <script src="./axios.min.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.2/vue.min.js"></script>
+  <script>
+    const app = new Vue({
+      el: '#app',
+      data: {
+        cookie: '',
+        charCodeUrl: '',
+        charCode: '',
+        userName: '杜欣铭',
+        idCard: '232303199909286815'
+      },
+      mounted() {
+        this.getLoginOption()
+      },
+      methods: {
+        getLoginOption() {
+          axios.get('/getLoginOption').then((result) => {
+            console.log(result);
+            this.cookie = result.data.cookie
+            this.charCodeUrl = "data:image/jpeg;base64," + result.data.charCode
+          }).catch((err) => {
 
-                    });
-                },
-                submit() {
-                    axios.post('/login', { charCode: this.charCode, idCard: this.idCard, userName: this.userName, cookie: this.cookie }).then(res => {
-                        console.log(res.data);
-                    })
-                }
-            }
-        })
-    </script>
+          });
+        },
+        submit() {
+          axios.post('/login', { charCode: this.charCode, idCard: this.idCard, userName: this.userName, cookie: this.cookie }).then(res => {
+            console.log(res.data);
+          })
+        }
+      }
+    })
+  </script>
 </body>
 
 </html>
