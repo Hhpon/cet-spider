@@ -3,7 +3,6 @@ const { _URL_ } = require('../config/config')
 const qs = require('querystring')
 
 async function login(userName, idCard, charCode, cookie) {
-    console.log(charCode);
 
     const loginOption = {
         method: 'post',
@@ -16,9 +15,7 @@ async function login(userName, idCard, charCode, cookie) {
             verificationCode: charCode
         },
         transformRequest: [function (data) {
-            console.log(data)
             data = qs.stringify(data)
-            console.log(data);
             return data
         }],
         headers: {
@@ -36,21 +33,7 @@ async function login(userName, idCard, charCode, cookie) {
 
     let loginRet = await axios(loginOption)
 
-    console.log(loginRet);
-
     return loginRet.data
 }
 
 module.exports = login
-
-// axios({
-//     method: 'post',
-//     url: 'http://cet-bm.neea.edu.cn/Home/ToQuickPrintTestTicket',
-//     data: {
-//         'provinceCode': 23,
-//         'IDTypeCode': 1,
-//         'IDNumber': 232303199909286815,
-//         'Name': 杜欣铭,
-//         'verificationCode': s0qm,
-//     }
-// })

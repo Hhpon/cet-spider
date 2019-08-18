@@ -24,7 +24,7 @@
     .input-box {
       display: flex;
       flex-direction: column;
-      margin: 30px 20px; 
+      margin: 30px 20px;
     }
 
     input {
@@ -72,11 +72,16 @@
         <img class="code" :src="charCodeUrl" alt="这里是验证码">
       </div>
       <button @click='submit'>登录</button>
+      <img :src="imgUrl" alt="">
+      <embed :src="imgUrl" type="application/pdf" width="100%" height="100%">
+      <a :href="imgUrl" target="_blank">新窗口打开 PDF</a>
     </div>
   </div>
   <script src="./axios.min.js"></script>
   <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.2/vue.min.js"></script>
+  <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
+  <script src="https://mozilla.github.io/pdf.js/build/pdf.worker.js"></script>
   <script>
     const app = new Vue({
       el: '#app',
@@ -85,7 +90,8 @@
         charCodeUrl: '',
         charCode: '',
         userName: '杜欣铭',
-        idCard: '232303199909286815'
+        idCard: '232303199909286815',
+        imgUrl: ''
       },
       mounted() {
         this.getLoginOption()
@@ -102,7 +108,13 @@
         },
         submit() {
           axios.post('/login', { charCode: this.charCode, idCard: this.idCard, userName: this.userName, cookie: this.cookie }).then(res => {
-            console.log(res.data);
+            let ret = res.data;
+            console.log(ret)
+            if (ret.ExceuteResultType === -1) {
+              alert(ret.Message)
+              return
+            }
+            this.imgUrl = "data:application/pdf;base64," + ret.zipRet
           })
         }
       }
