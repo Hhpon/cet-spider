@@ -27,6 +27,6 @@ app.post("/login", async (req, res) => {
     res.send(admissionNum)
 })
 
-app.listen(3000, () => {
-    console.log('server is listening on port 3000');
+app.listen(3012, () => {
+    console.log('server is listening on port 3012');
 })
