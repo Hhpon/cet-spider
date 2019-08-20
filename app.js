@@ -16,14 +16,18 @@ app.get('/getLoginOption', async (req, res) => {
 
 app.post("/login", async (req, res) => {
     let userInfo = req.body
+    // console.log(userInfo);
     let loginRetData = await login(userInfo.userName, userInfo.idCard, userInfo.charCode, userInfo.cookie)
     if (loginRetData.ExceuteResultType === -1) {
         res.send(loginRetData)
         return
     }
     let SID = JSON.parse(loginRetData.Message)[0].SID
+    console.log(SID);
     let pdfData = await getZip(userInfo.cookie, SID)
+    // console.log(pdfData);
     let admissionNum = pdfData.slice(pdfData.indexOf('准考证号') + 5, pdfData.indexOf('准考证号') + 20);
+    // console.log(admissionNum);
     res.send(admissionNum)
 })
 

@@ -33,17 +33,23 @@
       border-radius: 10px;
       font-size: 18px;
       padding-left: 10px;
+      outline: none;
     }
 
     .code-box {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+    }
+
+    .code-input{
+      flex: auto;
+      min-width: 0;
     }
 
     .code {
       height: 30px;
-      margin: 10px;
+      margin: 10px 10px 10px 0;
+      flex: none;
     }
 
     button {
@@ -102,7 +108,7 @@
       <input type="text" placeholder="请输入身份证号" v-model='idCard' />
       <input type="text" placeholder="请输入姓名" v-model='userName' />
       <div class="code-box">
-        <input type="text" placeholder="请输入验证码" v-model='charCode' v-on:keyup.enter="submit" />
+        <input class="code-input" type="text" placeholder="请输入验证码" v-model='charCode' v-on:keyup.enter="submit" />
         <img class="code" :src="charCodeUrl" alt="这里是验证码">
       </div>
       <button @click='submit'>登录</button>

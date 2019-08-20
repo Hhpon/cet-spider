@@ -3,11 +3,10 @@ const { _URL_ } = require('../config/config')
 const qs = require('querystring')
 const JSZip = require('jszip')
 const PDFParser = require('pdf2json')
-const pdfParser = new PDFParser(this, 1)
-const zip = new JSZip()
 
 function zipPromise(pdfRet) {
     return new Promise((resolve, reject) => {
+        const pdfParser = new PDFParser(this, 1)
         pdfParser.parseBuffer(pdfRet)
         pdfParser.on('pdfParser_dataError', errData => reject(new Error(errData.parserError)));
         pdfParser.on('pdfParser_dataReady', () => {
@@ -37,7 +36,6 @@ async function getZip(cookie, SID) {
         }
     }
     let ret = await axios(createZipOption)
-
     const zipOption = {
         url: `${_URL_}/Home/DownTestTicket`,
         params: {
@@ -51,6 +49,7 @@ async function getZip(cookie, SID) {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.18362'
         }
     }
+    const zip = new JSZip()
 
     let zipRet = await axios(zipOption)
     let unZipRet = await zip.loadAsync(zipRet.data)
