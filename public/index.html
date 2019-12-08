@@ -1,189 +1,212 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>准考证号查询</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>准考证号查询</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-    }
+      body {
+        background-color: #caf5fe;
+      }
 
-    body {
-      background-color: #caf5fe;
-    }
+      .banner {
+        width: 100%;
+      }
 
-    .banner {
-      width: 100%;
-    }
+      .input-box {
+        display: flex;
+        flex-direction: column;
+        margin: 30px 20px;
+      }
 
-    .input-box {
-      display: flex;
-      flex-direction: column;
-      margin: 30px 20px;
-    }
+      input {
+        height: 35px;
+        margin: 10px;
+        border: none;
+        border-radius: 10px;
+        font-size: 18px;
+        padding-left: 10px;
+        outline: none;
+      }
 
-    input {
-      height: 35px;
-      margin: 10px;
-      border: none;
-      border-radius: 10px;
-      font-size: 18px;
-      padding-left: 10px;
-      outline: none;
-    }
+      .code-box {
+        display: flex;
+        align-items: center;
+      }
 
-    .code-box {
-      display: flex;
-      align-items: center;
-    }
+      .code-input {
+        flex: auto;
+        min-width: 0;
+      }
 
-    .code-input{
-      flex: auto;
-      min-width: 0;
-    }
+      .code {
+        height: 30px;
+        margin: 10px 10px 10px 0;
+        flex: none;
+      }
 
-    .code {
-      height: 30px;
-      margin: 10px 10px 10px 0;
-      flex: none;
-    }
+      button {
+        height: 35px;
+        margin: 30px 10px;
+        border: none;
+        outline: none;
+        border-radius: 10px;
+        font-size: 18px;
+        background-color: #f16d7a;
+        color: #ffffff;
+        font-weight: 900;
+      }
 
-    button {
-      height: 35px;
-      margin: 30px 10px;
-      border: none;
-      outline: none;
-      border-radius: 10px;
-      font-size: 18px;
-      background-color: #f16d7a;
-      color: #ffffff;
-      font-weight: 900;
-    }
+      .loading {
+        position: fixed;
+        top: 40%;
+        width: 100%;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+      }
 
-    .loading {
-      position: fixed;
-      top: 40%;
-      width: 100%;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-    }
+      .content {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.3);
+      }
 
-    .content {
-      position: fixed;
-      top: 0;
-      bottom: 0;
-      width: 100%;
-      background-color: rgba(0, 0, 0, 0.3)
-    }
+      .content-wrapper {
+        margin: 0 auto;
+        width: 80%;
+        margin-top: 40%;
+        border-radius: 10px;
+        padding: 20px 10px;
+        background-color: #fff;
+      }
 
-    .content-wrapper {
-      margin: 0 auto;
-      width: 80%;
-      margin-top: 40%;
-      border-radius: 10px;
-      padding: 20px 10px;
-      background-color: #fff;
-    }
+      .copy-btn {
+        margin: 10px auto 0;
+        padding: 0 10px;
+        display: block;
+      }
+    </style>
+  </head>
 
-    .copy-btn {
-      margin: 10px auto 0;
-      padding: 0 10px;
-      display: block;
-    }
-  </style>
-</head>
-
-<body>
-  <div id="app">
-    <img class="banner" src="https://jser.hhp.im/hhp/img/banner.png" alt="">
-    <div class="loading" v-if='loading'>
-      <img src="./loading.svg" height="50px" alt="">
-    </div>
-    <div class="input-box">
-      <input type="text" placeholder="请输入身份证号" v-model='idCard' />
-      <input type="text" placeholder="请输入姓名" v-model='userName' />
-      <div class="code-box">
-        <input class="code-input" type="text" placeholder="请输入验证码" v-model='charCode' v-on:keyup.enter="submit" />
-        <img class="code" :src="charCodeUrl" alt="这里是验证码">
+  <body>
+    <div id="app">
+      <img class="banner" src="https://jser.hhp.im/hhp/img/banner.png" alt="" />
+      <div class="loading" v-if="loading">
+        <img src="./loading.svg" height="50px" alt="" />
       </div>
-      <button @click='submit'>登录</button>
-    </div>
-    <div class="content" v-if='contentWrapper'>
-      <div class="content-wrapper">
-        <div>姓名：{{userName}}</div>
-        <div>准考证号：<span id='admissionNum'>{{admissionNum}}</span></div>
-        <div>身份证号：{{idCard}}</div>
-        <button class="copy-btn" data-clipboard-action="copy" :data-clipboard-text="admissionNum" ref='copy'
-          @click="hideContent">复制准考证号</button>
+      <div class="input-box">
+        <input type="text" placeholder="请输入身份证号" v-model="idCard" />
+        <input type="text" placeholder="请输入姓名" v-model="userName" />
+        <div class="code-box">
+          <input
+            class="code-input"
+            type="text"
+            placeholder="请输入验证码"
+            v-model="charCode"
+            v-on:keyup.enter="submit"
+          />
+          <img class="code" :src="charCodeUrl" alt="这里是验证码" />
+        </div>
+        <button @click="submit">登录</button>
       </div>
-    </div>
-    <!-- <div class="tips" style="width: 80%;margin: 0 auto 10px;">
+      <div class="content" v-if="contentWrapper">
+        <div class="content-wrapper">
+          <div>姓名：{{userName}}</div>
+          <div>准考证号：<span id="admissionNum">{{admissionNum}}</span></div>
+          <div>身份证号：{{idCard}}</div>
+          <button
+            class="copy-btn"
+            data-clipboard-action="copy"
+            :data-clipboard-text="admissionNum"
+            ref="copy"
+            @click="hideContent"
+          >
+            复制准考证号
+          </button>
+        </div>
+      </div>
+      <!-- <div class="tips" style="width: 80%;margin: 0 auto 10px;">
       温馨提示：由于全国大学生四六级考试报名网(也就是我们查询准考证号的网站)访问人数太多，网站已经瘫痪，预计该网站可能会在下午才能被修复，大家稍安勿躁，晚点再查！
     </div> -->
-  </div>
-  <script src="./axios.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.2/vue.min.js"></script>
-  <script src="https://cdn.bootcss.com/clipboard.js/2.0.4/clipboard.js"></script>
-  <script>
-    const app = new Vue({
-      el: '#app',
-      data: {
-        cookie: '',
-        charCodeUrl: '',
-        charCode: '',
-        userName: '',
-        idCard: '',
-        imgUrl: '',
-        loading: false,
-        admissionNum: '',
-        contentWrapper: false
-      },
-      mounted() {
-        this.getLoginOption()
-      },
-      methods: {
-        hideContent() {
-          this.contentWrapper = false
+    </div>
+    <script src="./axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.2/vue.min.js"></script>
+    <script src="https://cdn.bootcss.com/clipboard.js/2.0.4/clipboard.js"></script>
+    <script>
+      const app = new Vue({
+        el: "#app",
+        data: {
+          cookie: "",
+          charCodeUrl: "",
+          charCode: "",
+          userName: "",
+          idCard: "",
+          imgUrl: "",
+          loading: false,
+          admissionNum: "",
+          contentWrapper: false
         },
-        getLoginOption() {
-          axios.get('/getLoginOption').then((result) => {
-            this.cookie = result.data.cookie
-            this.charCodeUrl = "data:image/jpeg;base64," + result.data.charCode
-          }).catch((err) => {
-
-          });
+        mounted() {
+          this.getLoginOption();
         },
-        submit() {
-          this.loading = true
-          axios.post('/login', { charCode: this.charCode, idCard: this.idCard, userName: this.userName, cookie: this.cookie }).then(res => {
-            let ret = res.data;
-            if (ret.ExceuteResultType === -1) {
-              this.loading = false
-              alert(ret.Message)
-              this.charCode = ''
-              this.getLoginOption()
-              return
-            }
-            this.loading = false
-            this.admissionNum = ret
-            this.contentWrapper = true
-            this.$nextTick(() => {
-              const copybtn = this.$refs.copy;
-              this.clipboard = new ClipboardJS(copybtn).on('success', function (e) {
-                alert('已复制');
-                e.clearSelection();
-              });;
-            })
-          })
+        methods: {
+          hideContent() {
+            this.contentWrapper = false;
+          },
+          getLoginOption() {
+            axios
+              .get("/getLoginOption")
+              .then(result => {
+                this.cookie = result.data.cookie;
+                this.charCodeUrl =
+                  "data:image/jpeg;base64," + result.data.charCode;
+              })
+              .catch(err => {});
+          },
+          submit() {
+            this.loading = true;
+            axios
+              .post("/login", {
+                charCode: this.charCode,
+                idCard: this.idCard,
+                userName: this.userName,
+                cookie: this.cookie
+              })
+              .then(res => {
+                let ret = res.data;
+                if (ret.ExceuteResultType === -1) {
+                  this.loading = false;
+                  alert(ret.Message);
+                  this.charCode = "";
+                  this.getLoginOption();
+                  return;
+                }
+                this.loading = false;
+                this.admissionNum = ret;
+                this.contentWrapper = true;
+                this.$nextTick(() => {
+                  const copybtn = this.$refs.copy;
+                  this.clipboard = new ClipboardJS(copybtn).on(
+                    "success",
+                    function(e) {
+                      alert("已复制");
+                      e.clearSelection();
+                    }
+                  );
+                });
+              });
+          }
         }
-      }
-    })
-  </script>
-</body>
-
+      });
+    </script>
+  </body>
 </html>

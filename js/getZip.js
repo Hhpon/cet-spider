@@ -3,6 +3,7 @@ const { _URL_ } = require('../config/config')
 const qs = require('querystring')
 const JSZip = require('jszip')
 const PDFParser = require('pdf2json')
+const fs = require('fs')
 
 function zipPromise(pdfRet) {
     return new Promise((resolve, reject) => {
